@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authorized Posts | Fetch Assignment</title>
+    <meta name="description" content="A small single page app that logs in to the dummyjson API and shows authorized posts." />
+
+    <link rel="icon" href="favicon.ico" sizes="32x32" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Karla:wght@400;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <script src="js/main.js" type="module"></script>
+  </head>
+  <!-- the class on <body> is the "state" of the page:
+       public -> authenticating -> fetching -> loaded  -->
+  <body class="public">
+    <header>
+      <h1>Authorized Posts <span class="user"></span></h1>
+      <nav class="logout">
+        <a href="#logout" id="logout"><img src="./img/account_circle_24dp.svg" alt="" /> Log Out</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="authentication">
+        <h2>Welcome to the Site</h2>
+        <p>To access the content, please login below.</p>
+        <form id="login_form">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" maxlength="30" required autocomplete="username" />
+          <label for="pass">Password</label>
+          <input type="password" id="pass" name="pass" maxlength="30" required autocomplete="current-password" />
+          <span>&nbsp;</span>
+          <button id="btnLogin"><img src="./img/account_circle_24dp.svg" alt="" /> Log In</button>
+        </form>
+        <p class="hint">Test login: <code>emilys</code> / <code>emilyspass</code></p>
+      </section>
+
+      <section id="authenticated">
+        <section class="loading">
+          <div class="coffee">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <p>Waiting for the good stuff...</p>
+        </section>
+        <section class="loaded">
+          <!-- post data goes here -->
+        </section>
+        <nav class="pager" aria-label="Post pages">
+          <button type="button" id="btnPrev">&larr; Newer</button>
+          <p id="pageInfo"></p>
+          <button type="button" id="btnNext">Older &rarr;</button>
+        </nav>
+      </section>
+    </main>
+
+    <footer>
+      <p>Data from dummyjson.com. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </footer>
+  </body>
+</html>

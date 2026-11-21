@@ -1,0 +1,605 @@
+/* ==========================================================
+   Fetch Assignment - main.css
+   normalize.css is loaded first (separate <link> in index.html)
+   The class on <body> controls which parts of the page show:
+     .public          -> login form only
+     .authenticating  -> login form, button busy
+     .fetching        -> logged in, coffee loader showing
+     .loaded          -> logged in, posts showing
+   ========================================================== */
+
+:root {
+  --font-body: 'Karla', system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+
+  --color-page: #f6f1ea; /* warm paper */
+  --color-surface: #ffffff;
+  --color-text: #2a1f1a; /* espresso */
+  --color-muted: #6b5a50;
+  --color-primary: #6f3b22; /* roasted coffee, 9:1 with white */
+  --color-primary-dark: #4e2715;
+  --color-accent: #c9792f; /* caramel */
+  --color-tag: #f1e3d3;
+  --color-like: #c2264b;
+  --color-dislike: #3f5e8c;
+  --color-border: #d9cbbd;
+  --color-focus: #e8a33d;
+
+  --color-info: #2f5d8a;
+  --color-success: #2e7041;
+  --color-error: #a22b2b;
+
+  --fs-small: clamp(0.85rem, 0.82rem + 0.15vw, 0.95rem);
+  --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --fs-h3: clamp(1.15rem, 1.05rem + 0.5vw, 1.4rem);
+  --fs-h2: clamp(1.6rem, 1.3rem + 1.4vw, 2.4rem);
+  --fs-h1: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+
+  --space-s: 0.5rem;
+  --space-m: 1rem;
+  --space-l: 1.5rem;
+  --space-xl: 2.5rem;
+  --radius: 0.75rem;
+  --shadow: 0 0.25rem 1rem rgb(78 39 21 / 0.08);
+  --max-width: 70rem;
+  --time: 0.2s;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  min-block-size: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-page);
+}
+
+img {
+  display: block;
+  max-inline-size: 100%;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Buttons ---------- */
+
+button,
+.logout a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-s);
+  padding: 0.6rem 1.1rem;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--time), transform var(--time);
+}
+
+button:hover,
+.logout a:hover {
+  background: var(--color-primary-dark);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+button img,
+.logout a img {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+}
+
+/* ---------- Header ---------- */
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-m);
+  padding: var(--space-m) max(var(--space-m), (100% - var(--max-width)) / 2);
+  background: var(--color-surface);
+  border-block-end: 4px solid var(--color-accent);
+}
+
+header h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s) var(--space-m);
+  font-size: var(--fs-h1);
+  color: var(--color-primary);
+}
+
+/* user details live inside the h1 span, filled in by JS */
+.user {
+  display: none;
+  align-items: center;
+  gap: var(--space-s);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+.user img {
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-tag);
+  border: 2px solid var(--color-accent);
+}
+
+.user strong {
+  display: block;
+  font-size: var(--fs-body);
+}
+
+.user small {
+  color: var(--color-muted);
+}
+
+/* ---------- Main + footer ---------- */
+
+main {
+  inline-size: 100%;
+  max-inline-size: var(--max-width);
+  margin-inline: auto;
+  padding: var(--space-xl) var(--space-m);
+}
+
+footer {
+  padding: var(--space-m);
+  text-align: center;
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+}
+
+/* ---------- Login section ---------- */
+
+#authentication {
+  max-inline-size: 28rem;
+  margin-inline: auto;
+  padding: var(--space-xl) var(--space-l);
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+#authentication h2 {
+  font-size: var(--fs-h2);
+  color: var(--color-primary);
+}
+
+#authentication p {
+  margin-block: var(--space-s) 0;
+}
+
+#authentication .hint {
+  margin-block-start: var(--space-m);
+}
+
+#login_form {
+  display: grid;
+  gap: var(--space-s);
+  margin-block-start: var(--space-l);
+}
+
+#login_form label {
+  font-weight: 700;
+}
+
+#login_form input {
+  padding: 0.6rem 0.8rem;
+  font: inherit;
+  border: 2px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+#login_form input:focus-visible {
+  border-color: var(--color-primary);
+}
+
+.hint {
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+}
+
+.hint code {
+  padding: 0.1rem 0.35rem;
+  background: var(--color-tag);
+  border-radius: 0.25rem;
+}
+
+/* ==========================================================
+   PAGE STATES
+   ========================================================== */
+
+/* default (public): only the login form */
+#authentication {
+  display: block;
+}
+#authenticated,
+.logout {
+  display: none;
+}
+
+/* waiting for the login request */
+body.authenticating #btnLogin {
+  opacity: 0.6;
+  pointer-events: none;
+}
+body.authenticating #btnLogin img {
+  animation: spin 1s linear infinite;
+}
+
+/* logged in (fetching or loaded): hide the form, show user + logout */
+body:is(.fetching, .loaded) {
+  #authentication {
+    display: none;
+  }
+  #authenticated {
+    display: block;
+  }
+  .logout {
+    display: block;
+  }
+  .user {
+    display: inline-flex;
+  }
+}
+
+/* fetching: loader on, posts + pager hidden */
+body.fetching {
+  section.loading {
+    display: grid;
+  }
+  section.loaded,
+  .pager {
+    display: none;
+  }
+}
+
+/* loaded: loader off, posts + pager on */
+body.loaded {
+  section.loading {
+    display: none;
+  }
+  section.loaded {
+    display: grid;
+  }
+  .pager {
+    display: flex;
+  }
+}
+
+/* ---------- Coffee loader ---------- */
+
+section.loading {
+  display: none;
+  justify-items: center;
+  gap: var(--space-m);
+  padding-block: var(--space-xl);
+  color: var(--color-muted);
+  font-size: var(--fs-h3);
+}
+
+.coffee {
+  position: relative;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-end;
+  justify-content: center;
+  inline-size: 6rem;
+  block-size: 8.5rem;
+}
+
+/* the cup */
+.coffee::before {
+  content: '';
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0.5rem;
+  inline-size: 4.5rem;
+  block-size: 3.75rem;
+  background: var(--color-primary);
+  border-radius: 0 0 1.75rem 1.75rem;
+}
+
+/* the handle */
+.coffee::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 1rem;
+  inset-inline-end: 0;
+  inline-size: 1.5rem;
+  block-size: 1.75rem;
+  border: 0.4rem solid var(--color-primary);
+  border-inline-start: 0;
+  border-radius: 0 1rem 1rem 0;
+}
+
+/* the three steam lines */
+.coffee div {
+  inline-size: 0.5rem;
+  block-size: 3rem;
+  margin-block-end: 4.25rem;
+  margin-inline-end: 1rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  opacity: 0;
+  animation: steam 1.8s ease-in-out infinite;
+}
+
+.coffee div:nth-child(2) {
+  animation-delay: 0.3s;
+  margin-inline-end: 0;
+}
+.coffee div:nth-child(3) {
+  animation-delay: 0.6s;
+  margin-inline-end: 1rem;
+}
+
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(1rem) scaleY(0.6);
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-1.5rem) scaleY(1.1);
+  }
+}
+
+@keyframes spin {
+  to {
+    rotate: 1turn;
+  }
+}
+
+/* ---------- Posts ---------- */
+
+section.loaded {
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: var(--space-l);
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  padding: var(--space-l);
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: inset 0 6px 0 var(--color-accent), var(--shadow);
+}
+
+.post[hidden] {
+  display: none;
+}
+
+.post h3 {
+  font-size: var(--fs-h3);
+  color: var(--color-primary);
+}
+
+.post p {
+  margin: 0;
+  /* 4 line clamp keeps the cards an even height */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+.post .id {
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+}
+
+/* tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags button {
+  padding: 0.2rem 0.7rem;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  background: var(--color-tag);
+}
+
+.tags button::before {
+  content: '#';
+  opacity: 0.6;
+}
+
+.tags button[aria-pressed='true'] {
+  color: #fff;
+  background: var(--color-accent);
+}
+
+/* likes / dislikes / views */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s);
+  margin-block-start: auto;
+  padding-block-start: var(--space-s);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.stats button {
+  padding: 0.3rem 0.75rem;
+  font-size: var(--fs-small);
+  background: transparent;
+  border: 2px solid currentColor;
+}
+
+.stats .like {
+  color: var(--color-like);
+}
+.stats .dislike {
+  color: var(--color-dislike);
+}
+
+.stats .like[aria-pressed='true'] {
+  color: #fff;
+  background: var(--color-like);
+  border-color: var(--color-like);
+}
+
+.stats .dislike[aria-pressed='true'] {
+  color: #fff;
+  background: var(--color-dislike);
+  border-color: var(--color-dislike);
+}
+
+/* hover colours only on devices with a mouse, so taps on phones don't "stick" */
+@media (hover: hover) {
+  .tags button:hover {
+    color: #fff;
+    background: var(--color-accent);
+  }
+  .stats .like:hover {
+    color: #fff;
+    background: var(--color-like);
+  }
+  .stats .dislike:hover {
+    color: #fff;
+    background: var(--color-dislike);
+  }
+}
+
+.stats .views {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-inline-start: auto;
+  font-size: var(--fs-small);
+  color: var(--color-muted);
+}
+
+.filter-note {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s);
+  margin: 0;
+}
+
+.filter-note button {
+  padding: 0.25rem 0.8rem;
+  font-size: var(--fs-small);
+}
+
+/* ---------- Pagination ---------- */
+
+.pager {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-m);
+  margin-block-start: var(--space-xl);
+}
+
+.pager p {
+  margin: 0;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* ---------- Message dialog (created by JS) ---------- */
+
+dialog.message {
+  --tone: var(--color-info);
+  inline-size: min(26rem, calc(100% - 2rem));
+  padding: var(--space-l);
+  border: 0;
+  border-block-start: 8px solid var(--tone);
+  border-radius: var(--radius);
+  color: var(--color-text);
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 0.25);
+}
+
+dialog.message.success {
+  --tone: var(--color-success);
+}
+dialog.message.error {
+  --tone: var(--color-error);
+}
+
+dialog.message::backdrop {
+  background: rgb(42 31 26 / 0.55);
+}
+
+dialog.message h2 {
+  font-size: var(--fs-h3);
+  color: var(--tone);
+}
+
+dialog.message small {
+  display: block;
+  margin-block-end: var(--space-m);
+  color: var(--color-muted);
+  word-break: break-all;
+}
+
+dialog.message button {
+  background: var(--tone);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
+  }
+}
